@@ -3,7 +3,6 @@ package com.grailsinaction
 class User {
     String loginId
     String password
-    String homepage
     Date dateCreated // Note, this property name along with lastUpdated has special auto time stamping capabilities
                      // provided by GORM.
 
@@ -12,6 +11,5 @@ class User {
         password size: 6..8, nullable: false, validator: { passwd, user ->
             passwd != user.loginId
         }
-        homepage url: true, nullable: true
     }
 }
