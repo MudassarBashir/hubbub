@@ -2,7 +2,7 @@ package com.grailsinaction
 
 class Profile {
     User user // Declares that the profile is attached to a User object.
-    byte[] photo /* Models binary data in a byte[] array. */
+    byte[] photo /* Models binary data in a byte[] array. Will tell Grails to store it as a BLOB (binary language object)*/
     String fullName
     String bio
     String homepage
