@@ -41,4 +41,33 @@ class PostIntegrationSpec extends Specification {
         then: "The posts appear on the retrieved user"
         sortedPostContent == ['First', 'Second', 'Third']
     }
+
+    def "Exercise tagging several posts with various tags"() {
+
+        given: "A user with a set of tags"
+        def user = new User(loginId: 'joe', password: 'secret')
+        def tagGroovy = new Tag(name: 'groovy')
+        def tagGrails = new Tag(name: 'grails')
+        user.addToTags(tagGroovy)
+        user.addToTags(tagGrails)
+        user.save(failOnError: true)
+
+        when: "The user tags two fresh posts"
+        def groovyPost = new Post(content: "A groovy post")
+        /* user now creates a post */
+        user.addToPosts(groovyPost)
+        /* which has a tag belonging to our user, signifying that the user tagged it */
+        groovyPost.addToTags(tagGroovy)
+        def bothPost = new Post(content: "A groovy and grails post")
+        /* user creates another post */
+        user.addToPosts(bothPost)
+        /* This second post has two tags */
+        bothPost.addToTags(tagGroovy)
+        bothPost.addToTags(tagGrails)
+
+        then:
+        user.tags*.name.sort() == [ 'grails', 'groovy']
+        1 == groovyPost.tags.size()
+        2 == bothPost.tags.size()
+    }
 }

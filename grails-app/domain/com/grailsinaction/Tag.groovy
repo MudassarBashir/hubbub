@@ -10,6 +10,7 @@ class Tag {
     }
 
     static hasMany = [ posts : Post ]
-    static belongsTo = [ User, Post ]
+    static belongsTo = [ User, Post ] /* Here tag belongs to both User and Post, but has no reference to them or to the
+    owning side */
 
 }
