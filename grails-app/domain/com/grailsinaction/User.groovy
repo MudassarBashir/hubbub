@@ -18,4 +18,9 @@ class User {
         }
         profile nullable: true
     }
+
+    static mapping = {
+        posts sort: 'dateCreated' /* Tells Grails to return posts sorted by date when accessing them from the User
+        object like user.posts.each for example. */
+    }
 }
