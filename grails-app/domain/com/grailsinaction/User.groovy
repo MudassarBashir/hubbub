@@ -16,6 +16,10 @@ class User {
         password size: 6..8, blank: false, validator: { passwd, user ->
             passwd != user.loginId
         }
+        // Control the order in which the fields appear in scaffolded views. Of course normally, constrains aren't
+        // for decoration of this kind.
+        tags()
+        posts()
         profile nullable: true
     }
 
