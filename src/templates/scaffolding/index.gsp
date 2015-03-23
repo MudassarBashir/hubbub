@@ -42,7 +42,9 @@
 					<%  props.eachWithIndex { p, i ->
 							if (i == 0) { %>
 						<td><g:link action="show" id="\${${propertyName}.id}">\${fieldValue(bean: ${propertyName}, field: "${p.name}")}</g:link></td>
-					<%      } else if (i < 6) {
+					<%      } else if (p.manyToOne || p.oneToOne) { %>
+                        <td>\${${propertyName}?.${p.name}?.displayString?.encodeAsHTML()}</td>
+                        <% } else if (i < 6) {
 								if (p.type == Boolean || p.type == boolean) { %>
 						<td><g:formatBoolean boolean="\${${propertyName}.${p.name}}" /></td>
 					<%          } else if (p.type == Date || p.type == java.sql.Date || p.type == java.sql.Time || p.type == Calendar) { %>
