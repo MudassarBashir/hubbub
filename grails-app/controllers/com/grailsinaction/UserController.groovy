@@ -101,4 +101,18 @@ class UserController {
             '*'{ render status: NOT_FOUND }
         }
     }
+
+    def search() {
+        /* Renders the search field view */
+    }
+
+    def results(String loginId) {
+        def users = User.where {
+           // loginId =~ loginId With this method users must input a wildcard we take care of this in the next line
+            loginId =~ "%${loginId}%"
+        }.list()
+        return [ users: users,
+                 term: params.loginId,
+                 totalUsers: User.count() ]
+    }
 }
