@@ -116,7 +116,7 @@ class BootStrap {
         postsAsList[3].dateCreated = now.updated(year: 2011, month: NOVEMBER, date: 8)
         postsAsList[4].dateCreated = now.updated(year: 2011, month: DECEMBER, date: 4)
         postsAsList[5].dateCreated = now.updated(year: 2012, month: AUGUST, date: 1)
-        
+
         sara.dateCreated = now - 2
         sara.save(failOnError: true)
 

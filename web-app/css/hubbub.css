@@ -16,12 +16,12 @@ body {
     background-image: -ms-linear-gradient(top, rgb(120,120,240) 5%, rgb(6,3,82) 100%, rgb(36,36,171) 100%);
 
     background-image: -webkit-gradient(
-	linear,
-	left top,
-	left bottom,
-	color-stop(0.05, rgb(120,120,240)),
-	color-stop(1, rgb(6,3,82)),
-	color-stop(1, rgb(36,36,171))
+            linear,
+            left top,
+            left bottom,
+            color-stop(0.05, rgb(120,120,240)),
+            color-stop(1, rgb(6,3,82)),
+            color-stop(1, rgb(36,36,171))
     );
 }
 
@@ -47,7 +47,7 @@ body {
     background-color: #d3e3f5;
     padding: 1em;
     border: 1px solid lightblue;
-    
+
 }
 
 #sidebar h3 {
@@ -56,7 +56,7 @@ body {
     border-bottom: 1px solid lightslategray;
     margin-top: 1em;
     margin-bottom: 1em;
-    
+
 }
 
 #newPost h3 {
@@ -77,11 +77,11 @@ body {
 #postContent {
     margin: 1em;
     font-size: large;
-    width: 90%;    
+    width: 90%;
 }
 
 dt {
-    float: left;    
+    float: left;
 }
 
 dd {
@@ -124,4 +124,3 @@ dd {
     margin: 1em;
     font-weight: bold;
 }
-

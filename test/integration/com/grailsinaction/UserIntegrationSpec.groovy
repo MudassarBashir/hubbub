@@ -1,7 +1,9 @@
 package com.grailsinaction
-
 import spock.lang.*
 
+/**
+ *
+ */
 class UserIntegrationSpec extends Specification {
 
     def "Saving our first user to the database"() {
@@ -26,7 +28,7 @@ class UserIntegrationSpec extends Specification {
         existingUser.save(failOnError: true)
 
         when: "A property is changed"
-        def foundUser = User.get(existingUser.id)    
+        def foundUser = User.get(existingUser.id)
         foundUser.password = 'sesame'
         foundUser.save(failOnError: true)
 
@@ -34,7 +36,7 @@ class UserIntegrationSpec extends Specification {
         User.get(existingUser.id).password == 'sesame'
 
     }
-    
+
     def "Deleting an existing user removes it from the database"() {
 
         given: "An existing user"
@@ -49,7 +51,7 @@ class UserIntegrationSpec extends Specification {
         !User.exists(foundUser.id)
 
     }
-    
+
     def "Saving a user with invalid properties causes an error"() {
 
         given: "A user which fails several field validations"
@@ -66,7 +68,7 @@ class UserIntegrationSpec extends Specification {
         !user.errors.getFieldError("loginId")
 
         // 'homepage' is now on the Profile class, so is not validated.
-    
+
     }
 
     def "Recovering from a failed save by fixing invalid properties"() {
@@ -83,7 +85,7 @@ class UserIntegrationSpec extends Specification {
         then: "The user saves and validates fine"
         !chuck.hasErrors()
         chuck.save()
-    
+
     }
 
     def "Ensure a user can follow other users"() {
@@ -101,7 +103,5 @@ class UserIntegrationSpec extends Specification {
         then: "Follower counts should match following people"
         2 == joe.following.size()
         1 == jill.following.size()
-        
     }
-    
 }
