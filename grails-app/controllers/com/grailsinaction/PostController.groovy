@@ -1,6 +1,7 @@
 package com.grailsinaction
 
 class PostController {
+
     static scaffold = true
 
     static defaultAction = "home"
