@@ -102,4 +102,16 @@ class PostControllerSpec extends Specification {
                                                                    
     }
 
+    def "Adding a valid new post to the timeline"() {
+        given: "a mock post service"
+            def mockPostService = Mock(PostService)
+            1 * mockPostService.createPost(_, _) >> new Post(content: "Mock Post")
+            controller.postService = mockPostService
+        when: "controller is invoked"
+            def result = controller.addPost("joe_cool", "Posting up a storm")
+        then: "redirected to timeline, flash message tells us all is well"
+            flash.message ==~ /Added new post: Mock.*/
+            response.redirectedUrl == '/post/timeline/joe_cool'
+    }
+
 }
