@@ -9,6 +9,7 @@ import grails.test.mixin.Mock
 
 @TestFor(PostService)
 @Mock([User,Post])
+
 class PostServiceSpec extends Specification {
     def "Valid posts get saved and added to the user"() {
         given: "A new user in the db"

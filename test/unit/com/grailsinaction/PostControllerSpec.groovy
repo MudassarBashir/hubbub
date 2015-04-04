@@ -102,7 +102,7 @@ class PostControllerSpec extends Specification {
                                                                    
     }
 
-    def "Adding a valid new post to the timeline"() {
+    def "Adding a valid new post to the timeline thru the service"() {
         given: "a mock post service"
             def mockPostService = Mock(PostService)
             1 * mockPostService.createPost(_, _) >> new Post(content: "Mock Post")
@@ -111,6 +111,18 @@ class PostControllerSpec extends Specification {
             def result = controller.addPost("joe_cool", "Posting up a storm")
         then: "redirected to timeline, flash message tells us all is well"
             flash.message ==~ /Added new post: Mock.*/
+            response.redirectedUrl == '/post/timeline/joe_cool'
+    }
+
+    def "Adding an invalid new post to the timeline thru the service"() {
+        given: "a mock post service"
+            def mockPostService = Mock(PostService)
+            1 * mockPostService.createPost(_,_) >> { throw new PostException(message: "Invalid or empty post") }
+            controller.postService = mockPostService
+        when: "controller is invoked"
+            def result = controller.addPost("joe_cool", "Posting up a storm")
+        then: "redirected to timeline, flash message tells us all is well"
+            flash.message ==~ 'Invalid or empty post'
             response.redirectedUrl == '/post/timeline/joe_cool'
     }
 
