@@ -6,7 +6,7 @@ import grails.test.mixin.*
 import spock.lang.*
 
 @TestFor(UserController)
-@Mock(User)
+@Mock([User, Profile])
 class UserControllerSpec extends Specification {
 
     def populateValidParams(params) {
@@ -145,5 +145,25 @@ class UserControllerSpec extends Specification {
             User.count() == 0
             response.redirectedUrl == '/user/index'
             flash.message != null
+    }
+
+    def "Registering a user with known good parameters"() {
+        given: "a set of user parameters"
+            params.with {
+                loginId = "glen_a_smith"
+                password = "winnning"
+                homepage = "http://blogs.bytecode.com.au/glen"
+            }
+        and: "a set of profile parameters"
+            params['profile.fullName'] = "Glen Smith"
+            params['profile.email'] = "glen@bytecode.com.au"
+            params['profile.homepage'] = "http://blogs.bytecode.com.au/glen"
+        when: "the user is registered"
+            request.method = "POST"
+            controller.register()
+        then: "the user is created, and browser redirected"
+            response.redirectedUrl == '/'
+            User.count() == 1
+            Profile.count() == 1
     }
 }
