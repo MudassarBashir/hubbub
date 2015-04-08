@@ -13,7 +13,7 @@
 </head>
 <body>
 <h1>Upload an image</h1>
-<g:uploadForm action="upload">
+<g:uploadForm action="rawUpload">
     User Id:
     <g:select name="loginId" from="${userList}" optionKey="loginId" optionValue="loginId" />
     <p/>
