@@ -11,7 +11,16 @@ class ImageController {
         redirect controller: "user", action: "profile", id: puc.loginId
     }
     def form() {
-// pass through to upload form
+// pass the following model through to upload form
         [ userList : User.list() ]
+    }
+
+    def rawUpload() {
+// a Spring MultipartFile
+        def mpf = request.getFile('photo')
+        if (!mpf?.empty && mpf.size < 1024*200) {
+            mpf.transferTo(new File(
+                    "/hubbub/images/${params.loginId}/mugshot.gif"))
+        }
     }
 }
