@@ -65,6 +65,11 @@ class UserController {
             }
         }
     }
+
+    def profile (String id) {
+        def user = User.findByLoginId(id)
+        [profile: user?.profile]
+    }
     
 }
 
