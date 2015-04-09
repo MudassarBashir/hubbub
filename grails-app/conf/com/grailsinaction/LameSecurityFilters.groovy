@@ -1,17 +1,22 @@
 package com.grailsinaction
 
 class LameSecurityFilters {
-
     def filters = {
-        all(controller:'*', action:'*') {
+        secureActions(controller:'post',
+                action:'(addPost|deletePost)') {
             before = {
-
+                if (params.impersonateId) {
+                    session.user = User.findByLoginId(params.impersonateId)
+                }
+                if (!session.user) {
+                    redirect(controller: 'login', action: 'form')
+                    return false
+                }
             }
-            after = { Map model ->
-
+            after = { model->
             }
-            afterView = { Exception e ->
-
+            afterView = {
+                log.debug "Finished running ${controllerName} –  ${actionName}"
             }
         }
     }
