@@ -2,17 +2,19 @@ package com.grailsinaction
 
 class LoginController {
 
-    def form() {
-        // Just renders the login view.
+    def form(String id) {
+        [loginId: id]
     }
 
-    def signIn() {
-        def user = User.findByLoginIdAndPassword(params.loginId, params.password)
-        if (user) {
+    def signIn(String loginId, String password) {
+        def user = User.findByLoginId(loginId)
+        if (user && user.password == password) {
             session.user = user
+            redirect uri: "/"
         }
         else {
-            redirect action: 'form'
+            flash.error = "Unknown username or password"
+            redirect action: "form"
         }
     }
 }

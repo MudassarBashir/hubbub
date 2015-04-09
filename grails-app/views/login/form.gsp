@@ -8,17 +8,26 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <title>
-        Hubbub Login
-    </title>
-    <meta name="layout" content="main"/>
+    <title>Sign into Hubbub</title>
+    <meta name="layout" content="main">
 </head>
 <body>
-    <g:form action="signIn">
-        <g:textField name="loginId"/><br><br>
-        <g:passwordField name="password"/><br><br>
-        <g:submitButton name="submit" value="Submit" />
-    </g:form>
+<h1>Sign in</h1>
+<g:form action="signIn">
+    <fieldset class="form">
+        <div class="fieldcontain required">
+            <label for="loginId">Login ID</label>
+            <g:textField name="loginId" value="${loginId}"/>
+        </div>
+        <div class="fieldcontain required">
+            <label for="password">Password</label>
+            <g:passwordField name="password"/>
+        </div>
+    </fieldset>
+    <fieldset class="buttons">
+        <g:submitButton name="signIn" value="Sign in"/>
+    </fieldset>
+</g:form>
+
 </body>
 </html>
-
