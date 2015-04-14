@@ -25,5 +25,13 @@ class UrlMappings {
             controller = "post"
             action = "personal"
         }
+
+        "/users/$loginId/feed/$format?" {
+            controller = "post"
+            action = "feed"
+            constraints {
+                format(inList: ['rss', 'atom'])
+            }
+        }
 	}
 }

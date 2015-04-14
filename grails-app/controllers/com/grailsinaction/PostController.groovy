@@ -30,4 +30,13 @@ class PostController {
         }
         redirect(action: 'timeline', id: id)
     }
+
+    def personal () {
+        if (session.user) {
+            redirect(action: 'timeline', id: session.user.id)
+        }
+        else {
+            redirect(controller: 'login', action: 'form')
+        }
+    }
 }
