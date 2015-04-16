@@ -1,8 +1,7 @@
 package com.grailsinaction
 
 class Profile {
-    User user // Declares that the profile is attached to a User object.
-    byte[] photo /* Models binary data in a byte[] array. Will tell Grails to store it as a BLOB (binary language object)*/
+    byte[] photo
     String fullName
     String bio
     String homepage
@@ -10,15 +9,22 @@ class Profile {
     String timezone
     String country
     String jabberAddress
+    String skin
+
+    static belongsTo = [ user : User ]
 
     static constraints = {
         fullName blank: false
         bio nullable: true, maxSize: 1000
         homepage url: true, nullable: true
         email email: true, blank: false
-        photo nullable: true, maxSize: 2 * 1024 * 1024 // Photo can be up to 2 MB in file size.
+        photo nullable: true, maxSize: 2 * 1024 * 1024
         country nullable: true
         timezone nullable: true
         jabberAddress email: true, nullable: true
+        skin nullable: true, blank: true, inList: ['blues', 'nighttime']
     }
+
+    String toString() { return "Profile of $fullName (id: $id)" }
+    String getDisplayString() { return fullName }
 }
