@@ -1,104 +1,102 @@
 package com.grailsinaction
 
-
-
-import static org.springframework.http.HttpStatus.*
-import grails.transaction.Transactional
-
-@Transactional(readOnly = true)
 class UserController {
+    static scaffold = true
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    def search() {}
 
-    def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        respond User.list(params), model:[userInstanceCount: User.count()]
+    def results(String loginId) {
+        def users = User.where { loginId =~ "%${loginId}%" }.list()
+        return [ users: users,
+                 term: params.loginId,
+                 totalUsers: User.count() ]
     }
 
-    def show(User userInstance) {
-        respond userInstance
-    }
+    def advSearch() {}
 
-    def create() {
-        respond new User(params)
-    }
+    def advResults() {
+        def profileProps = Profile.metaClass.properties*.name
+        def profiles = Profile.withCriteria {
+            "${params.queryType}" {
 
-    @Transactional
-    def save(User userInstance) {
-        if (userInstance == null) {
-            notFound()
-            return
-        }
+                params.each { field, value ->
 
-        if (userInstance.hasErrors()) {
-            respond userInstance.errors, view:'create'
-            return
-        }
+                    if (profileProps.grep(field) && value) {
+                        ilike(field, value)
+                    }
+                }
 
-        userInstance.save flush:true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])
-                redirect userInstance
             }
-            '*' { respond userInstance, [status: CREATED] }
+
         }
+        [ profiles : profiles ]
+
     }
 
-    def edit(User userInstance) {
-        respond userInstance
-    }
-
-    @Transactional
-    def update(User userInstance) {
-        if (userInstance == null) {
-            notFound()
-            return
-        }
-
-        if (userInstance.hasErrors()) {
-            respond userInstance.errors, view:'edit'
-            return
-        }
-
-        userInstance.save flush:true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'User.label', default: 'User'), userInstance.id])
-                redirect userInstance
+    def register() {
+        if (request.method == "POST") {
+            def user = new User(params)
+            if (user.validate()) {
+                user.save()
+                flash.message = "Successfully Created User"
+                redirect(uri: '/')
+            } else {
+                flash.message = "Error Registering User"
+                return [ user: user ]
             }
-            '*'{ respond userInstance, [status: OK] }
+        }
+    }
+    
+    def register2(UserRegistrationCommand urc) {
+        if (urc.hasErrors()) {
+            render view: "register", model: [ user : urc ]
+        } else {
+            def user = new User(urc.properties)
+            user.profile = new Profile(urc.properties)
+            if (user.validate() && user.save()) {
+                flash.message = "Welcome aboard, ${urc.fullName ?: urc.loginId}"
+                redirect(uri: '/')
+            } else {
+                // maybe not unique loginId?
+                return [ user : urc ]
+            }
         }
     }
 
-    @Transactional
-    def delete(User userInstance) {
-
-        if (userInstance == null) {
-            notFound()
-            return
-        }
-
-        userInstance.delete flush:true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'User.label', default: 'User'), userInstance.id])
-                redirect action:"index", method:"GET"
-            }
-            '*'{ render status: NO_CONTENT }
+    def profile(String id) {
+        def user = User.findByLoginId(id)
+        if (user) {
+            return [profile: user.profile]
+        } else {
+            response.sendError(404)
         }
     }
+    
+}
 
-    protected void notFound() {
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])
-                redirect action: "index", method: "GET"
-            }
-            '*'{ render status: NOT_FOUND }
-        }
+class UserRegistrationCommand {
+    String loginId
+    String password
+    String passwordRepeat
+    byte[] photo
+    String fullName
+    String bio
+    String homepage
+    String email
+    String timezone
+    String country
+    String jabberAddress
+
+    static constraints = {
+        importFrom Profile
+        importFrom User
+        password(size: 6..8, blank: false,
+                 validator: { passwd, urc ->
+                    return passwd != urc.loginId
+                })
+        passwordRepeat(nullable: false,
+                validator: { passwd2, urc ->
+                    return passwd2 == urc.password
+                })
     }
 }
