@@ -4,9 +4,19 @@
             Timeline for ${ user.profile ? user.profile.fullName : user.loginId }
         </title> 
         <meta name="layout" content="main"/>
+        <g:javascript library="jquery"/>
         <g:if test="${user.profile?.skin}">
             <g:external dir="css" file="${user.profile.skin}.css"/>
         </g:if>
+        <g:javascript>
+            function clearPost(e) {
+                $('#postContent').val('');
+            }
+            function showSpinner(visible) {
+                if (visible) $('#spinner').show();
+                else $('#spinner').hide();
+            }
+        </g:javascript>
     </head>
     <body>
         <h1>Timeline for ${ user.profile ? user.profile.fullName : user.loginId }</h1>
