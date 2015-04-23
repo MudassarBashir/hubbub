@@ -13,6 +13,6 @@
                               onComplete="showSpinner(false)"/>
             <g:img id="spinner" style="display: none"
                    uri="/images/spinner.gif"/>
-        </g:form>
+         </g:form>
     </p>
 </div>

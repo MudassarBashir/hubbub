@@ -27,8 +27,30 @@
             </div>
         </g:if>
 
-    <g:render template="newPost"/>
-        
+        <g:render template="newPost"/>
+        <a href="#" id="showHideUrl"
+           onclick="$('#tinyUrl').slideToggle(300); return false;">
+            TinyURL Bar
+        </a>
+        <div id="tinyUrl" style="display:none;">
+            <g:formRemote name="tinyUrlForm" url="[action: 'tinyUrl']" onSuccess="addTinyUrl(data);">
+                TinyUrl: <g:textField name="fullUrl"/>
+                <g:submitButton name="submit" value="Make Tiny"/>
+            </g:formRemote>
+        </div>
+        <r:script disposition="head">
+            function toggleTinyUrl() {
+                var toggleText = $('#showHideUrl');
+                if ($('#tinyUrl').is(':visible')) {
+                    $('#tinyUrl').slideUp(300);
+                    toggleText.innerText = 'Hide TinyURL';
+                }
+                else {
+                    $('#tinyUrl').slideDown(300);
+                    toggleText.innerText = 'Show TinyURL';
+                }
+            }
+        </r:script>
         <div id="allPosts">
             <g:each in="${user.posts}" var="post">
                 <div class="postEntry">
