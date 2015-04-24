@@ -16,6 +16,13 @@
                 if (visible) $('#spinner').show();
                 else $('#spinner').hide();
             }
+            function addTinyUrl(data) {
+                var tinyUrl = data.urls.small;
+                var postBox = $("#postContent")
+                postBox.val(postBox.val() + tinyUrl);
+                toggleTinyUrl();
+                $("#tinyUrl input[name='fullUrl']").val('');
+            }
         </g:javascript>
     </head>
     <body>
