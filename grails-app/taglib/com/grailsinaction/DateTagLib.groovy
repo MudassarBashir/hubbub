@@ -1,10 +1,11 @@
 package com.grailsinaction
 
 class DateTagLib {
+    static namespace = "hub"
 
     def dateFromNow = { attrs ->
         def date = attrs.date
-        def niceDate = getNiceDate(date) // implement this somehow...
+        def niceDate = getNiceDate(date)
         out << niceDate
     }
 
@@ -39,9 +40,5 @@ class DateTagLib {
         }
         return niceTime
     }
-
-    static namespace = "hub"
-
-    static defaultEncodeAs = 'html'
-    //static encodeAsForTags = [tagName: 'raw']
+    
 }

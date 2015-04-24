@@ -1,15 +1,15 @@
 package com.grailsinaction
 
 class PostController {
-
-    static navigation = [
-            [group:'tabs', action: 'personal', title: 'My Timeline', order: 0],
-            [action: 'global', title: 'Global Timeline', order: 1]
-    ]
-
     static scaffold = true
 
     static defaultAction = "home"
+
+    static navigation = [
+        [group:'tabs', action: 'personal', title: 'My Timeline', order: 0],
+        [action: 'global', title: 'Global Timeline', order: 1]
+    ]
+    
 
     def postService
 
@@ -28,7 +28,7 @@ class PostController {
             [ user : user ]
         }
     }
-    
+
     def personal() {
         if (!session.user) {
             redirect controller: "login", action: "form"
@@ -57,11 +57,11 @@ class PostController {
     def addPostAjax(String content) {
         try {
             def newPost = postService.createPost(session.user.loginId, content)
-            def recentPosts = Post.findAllByUser(session.user,
-                                                [sort: 'dateCreated', order: 'desc', max: 20])
+            def recentPosts = Post.findAllByUser(
+                    session.user,
+                    [sort: 'dateCreated', order: 'desc', max: 20])
             render template: 'postEntry', collection: recentPosts, var: 'post'
-        }
-        catch (PostException pe) {
+        } catch (PostException pe) {
             render {
                 div(class:"errors", pe.message)
             }
@@ -70,8 +70,8 @@ class PostController {
 
     def tinyUrl(String fullUrl) {
         def origUrl = fullUrl?.encodeAsURL()
-        def tinyUrl =
-                new URL("http://tinyurl.com/api-create.php?url=${origUrl}").text
+        def tinyUrl = 
+            new URL("http://tinyurl.com/api-create.php?url=${origUrl}").text
         render(contentType:"application/json") {
             urls(small: tinyUrl, full:fullUrl)
         }

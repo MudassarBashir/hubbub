@@ -17,7 +17,7 @@
         <fieldset class="form">
             <div class="fieldcontain required">
                 <label for="loginId">Login ID</label>
-                <g:textField name="loginId"/>
+                <g:textField name="loginId" value="${user?.loginId}"/>
             </div>
             <div class="fieldcontain required">
                 <label for="password">Password</label>
@@ -28,9 +28,26 @@
                 <g:passwordField name="passwordRepeat"/>
             </div>
             <div class="fieldcontain required">
+                <label for="fullName">Full Name</label>
+                <g:textField name="fullName" value="${user?.fullName}"/>
+            </div>
+            <div class="fieldcontain required">
+                <label for="bio">Bio</label>
+                <g:textArea name="bio" value="${user?.bio}"/>
+            </div>
+            <div class="fieldcontain required">
+                <label for="email">Email</label>
+                <g:textField name="email" value="${user?.email}"/>
+                <g:hasErrors bean="${user}" field="email">
+                    <g:eachError bean="${user}" field="email">
+                        <p style="color: red;"><g:message error="${it}"/></p>
+                    </g:eachError>
+                </g:hasErrors>
+            </div>
+            <div class="fieldcontain required">
                 <label for="country">Country</label>
                 <g:countrySelect name="country"
-                                 noSelection="['':'Choose your country...']"/>
+                    noSelection="['':'Choose your country...']"/>
             </div>
             <div class="fieldcontain required">
                 <label for="timezone">Timezone</label>
@@ -43,10 +60,10 @@
             <div class="fieldcontain required">
                 <label for="referrer">Who introduced you to Hubbub?</label>
                 <g:select name="referrer"
-                          from="${com.grailsinaction.Profile.list()}"
-                          optionKey="id"
-                          optionValue="fullName"
-                          noSelection="${['null':'Please Choose...']}" />
+                   from="${com.grailsinaction.Profile.list()}"
+                   optionKey="id"
+                   optionValue="fullName"
+                   noSelection="${['null':'Please Choose...']}" />
             </div>
             <div class="fieldcontain required">
                 <label for="spamMe">Spam me forever?</label>
@@ -55,10 +72,10 @@
             <div class="fieldcontain required">
                 <label for="emailFormat">Email Format</label>
                 <g:radioGroup name="emailFormat"
-                              labels="['Plain','HTML']"
-                              values="['P', 'H']"
-                              value="H">
-                    ${it.label} ${it.radio}
+                    labels="['Plain','HTML']"
+                    values="['P', 'H']"
+                    value="H">
+                        ${it.label} ${it.radio}
                 </g:radioGroup>
             </div>
         </fieldset>
