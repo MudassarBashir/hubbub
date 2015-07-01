@@ -46,12 +46,20 @@ grails.project.dependency.resolution = {
         //mavenRepo "http://repository.jboss.com/maven2/"
     }
 
+    def gebVersion = "0.9.2"
+    def seleniumVersion = "2.41.0"
+
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes e.g.
         // runtime 'mysql:mysql-connector-java:5.1.24'
+        test "org.gebish:geb-spock:$gebVersion"
+        test "org.seleniumhq.selenium:selenium-support:$seleniumVersion"
+        test "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
     }
 
     plugins {
+        test ":geb:$gebVersion"
+
         // plugins for the build system only
         build ":tomcat:7.0.47"
 
